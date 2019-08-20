@@ -3,7 +3,7 @@
 
 我们分析 go 版本的 grpc 实现，所以这里主要讲解 grpc-go 的安装和使用
 
-####1、安装
+#### 1、安装
 
 go 语言版本的 grpc 安装需要 1.6 以上的 go 版本，所以你需要先执行 go version 查看 go  版本，假如版本低于 1.6 则需要先升级。
 
@@ -27,7 +27,7 @@ go 语言版本的 grpc 安装需要 1.6 以上的 go 版本，所以你需要�
 	// 配置 GOPATH
 	export GOPATH=/Users/delvin/go
 
-####2、hello world
+#### 2、hello world
 
    grpc-go 官方提供了一些 examples ，都放在 examples 目录下，examples 目录下有三个目录，features 目录主要是 grpc 的一些特写使用，包括路由寻址、keep-alive、负载均衡等。helloworld 目录下主要是提供了一个 helloworld demo。route_guide 目录主要提供了对 grpc 四种调用方式：Simple RPC、Client-side streaming RPC、Server-side streaming RPC、Bidirectional streaming RPC 的模拟调用 demo。
 
@@ -83,7 +83,7 @@ go 语言版本的 grpc 安装需要 1.6 以上的 go 版本，所以你需要�
 	2019/08/03 15:57:46 Greeting: Helloworld
 
 
-####3、自定义一个 service
+#### 3、自定义一个 service
 
   这里也是 grpc docs 上一个相同的例子，我贴上来介绍一下，为了让本节内容更完整。
 	
