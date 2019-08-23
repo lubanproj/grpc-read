@@ -390,6 +390,60 @@ Invoke 方法调用了 invoke， 在 invoke 这个方法里面，果然不出所
 
 这里比较清楚了，最终还是调用了 p.r.Read 方法，p.r 是一个 io.Reader 类型。果然万变不离其中，最终都是要落到 IO 上。
 
-到这里，整个 client 结构已经基本解析清楚了，but wait，总感觉哪里不太对，接收数据是调用 io.Reader ，按道理发送数据应该也是调用 io.Writer 才对。可是追溯到 ClientTransport 这里，发现它是一个 interface ，并没有实现 Write 方法，所以，Write 也是一个接口，这里是不是可以继续追溯呢？这个问题留给大家去发现了。
+到这里，整个 client 结构已经基本解析清楚了，but wait，总感觉哪里不太对，接收数据是调用 io.Reader ，按道理发送数据应该也是调用 io.Writer 才对。可是追溯到 ClientTransport 这里，发现它是一个 interface ，并没有实现 Write 方法，所以，Write 也是一个接口，这里是不是可以继续追溯呢？
 
 		Write(s *Stream, hdr []byte, data []byte, opts *Options) error
+		
+		
+返回去从头看，我们找到了 transport 的来源，在 Serve() 方法 的 handleRawConn 方法中，newHttp2Transport，创建了一个 Http2Transport ，然后通过 serveStreams 方法将这个 Http2Transport 层层透传下去。
+
+
+	// Finish handshaking (HTTP2)
+	st := s.newHTTP2Transport(conn, authInfo)
+	if st == nil {
+		return
+	}
+
+	rawConn.SetDeadline(time.Time{})
+	if !s.addConn(st) {
+		return
+	}
+	go func() {
+		s.serveStreams(st)
+		s.removeConn(st)
+	}()
+
+
+继续看一下 http2Client 的 Write 方法，如下：
+
+
+	func (t *http2Server) Write(s *Stream, hdr []byte, data []byte, opts *Options) error {
+		...
+
+		hdr = append(hdr, data[:emptyLen]...)
+		data = data[emptyLen:]
+		df := &dataFrame{
+			streamID:    s.id,
+			h:           hdr,
+			d:           data,
+			onEachWrite: t.setResetPingStrikes,
+		}
+		if err := s.wq.get(int32(len(hdr) + len(data))); err != nil {
+			select {
+			case <-t.ctx.Done():
+				return ErrConnClosing
+			default:
+			}
+			return ContextErr(s.ctx.Err())
+		}
+		return t.controlBuf.put(df)
+	}
+	
+
+可以看到，最终是把 data 放到了一个 controlBuf 的结构体里面
+
+
+	// controlBuf delivers all the control related tasks (e.g., window
+	// updates, reset streams, and various settings) to the controller.
+	controlBuf *controlBuffer
+
