@@ -105,7 +105,9 @@ dialOptions 其实就是对客户端属性的一些设置，包括压缩解压�
 		channelzID int64
 	}
 
-连接的状态管理器，每个连接具有 “IDLE”、“CONNECTING”、“READY”、“TRANSIENT_FAILURE”、“SHUTDOWN”、“Invalid-State” 这几种状态。
+连接的状态管理器，每个连接具有 “IDLE”、“CONNECTING”、“READY”、“TRANSIENT_FAILURE”、“SHUTDOW
+N”、“Invalid-State” 这几种状态。
+
 
 #### pickerWrapper
 
@@ -227,7 +229,7 @@ scChan 是 dialOptions 中的一个属性，定义如下：
 			}
 		}
 
-####2）通过一个 conn 创建一个客户端
+#### 2）通过一个 conn 创建一个客户端
 
 通过一个 conn 创建客户端的代码如下：
 
@@ -243,7 +245,7 @@ scChan 是 dialOptions 中的一个属性，定义如下：
 			return &greeterClient{cc}
 		}
 
-### 3）发起 rpc 调用
+#### 3）发起 rpc 调用
 
 前面在创建 Dialer 的时候，我们已经将请求的 target 解析成了 address。我们猜这一步应该是向指定 address 发起 rpc 请求了。来具体看看
 
@@ -282,7 +284,7 @@ SayHello 方法是通过调用 Invoke 的方法去发起 rpc 调用， Invoke �
 
 Invoke 方法调用了 invoke， 在 invoke 这个方法里面，果然不出所料，我们看到了 sendMsg 和 recvMsg 接口，这两个接口在 clientStream 中被实现了。
 
-####SendMsg
+#### SendMsg
 
 我们先来看看 clientStream 中定义的 sendMsg，关键代码如下：
 
@@ -446,4 +448,6 @@ Invoke 方法调用了 invoke， 在 invoke 这个方法里面，果然不出所
 	// controlBuf delivers all the control related tasks (e.g., window
 	// updates, reset streams, and various settings) to the controller.
 	controlBuf *controlBuffer
+
+controlBuf 是 http2 客户端发送数据的实现，这里留待后续研究
 
