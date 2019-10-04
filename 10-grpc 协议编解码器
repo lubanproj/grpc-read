@@ -201,19 +201,47 @@ processUnaryRPC 方法中有一段 server 发送响应数据的代码。其实�
 			grpclog.Errorln("grpc: server failed to encode response: ", err)
 			return err
 		}
-		compData, err := compress(data, cp, comp)
-		if err != nil {
-			grpclog.Errorln("grpc: server failed to compress response: ", err)
-			return err
-		}
-		hdr, payload := msgHeader(data, compData)
-		// TODO(dfawley): should we be checking len(data) instead?
-		if len(payload) > s.opts.maxSendMessageSize {
-			return status.Errorf(codes.ResourceExhausted, "grpc: trying to send message larger than max (%d vs. %d)", len(payload), s.opts.maxSendMessageSize)
-		}
-		err = t.Write(stream, hdr, payload, opts)
-		if err == nil && s.opts.statsHandler != nil {
-			s.opts.statsHandler.HandleRPC(stream.Context(), outPayload(false, msg, data, payload, time.Now()))
-		}
-		return err
+		...
 	}
+
+来看一下 encode
+
+	func encode(c baseCodec, msg interface{}) ([]byte, error) {
+		if msg == nil { // NOTE: typed nils will not be caught by this check
+			return nil, nil
+		}
+		b, err := c.Marshal(msg)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "grpc: error while marshaling: %v", err.Error())
+		}
+		if uint(len(b)) > math.MaxUint32 {
+			return nil, status.Errorf(codes.ResourceExhausted, "grpc: message too large (%d bytes)", len(b))
+		}
+		return b, nil
+	}
+
+它调用了 c.Marshal 方法， Marshal 方法其实是 baseCodec 定义的一个通用抽象方法
+
+	type baseCodec interface {
+		Marshal(v interface{}) ([]byte, error)
+		Unmarshal(data []byte, v interface{}) error
+	}
+
+proto 实现了 baseCodec，前面说到了通过 s.getCodec(stream.ContentSubtype(),msg) 获取到的其实是 contentType 里面设置的协议名称，不设置的话默认取 proto 的编码器。所以最终是调用了 proto 包下的 Marshal 方法，如下：
+
+	func (codec) Marshal(v interface{}) ([]byte, error) {
+		if pm, ok := v.(proto.Marshaler); ok {
+			// object can marshal itself, no need for buffer
+			return pm.Marshal()
+		}
+	
+		cb := protoBufferPool.Get().(*cachedProtoBuffer)
+		out, err := marshal(v, cb)
+	
+		// put back buffer and lose the ref to the slice
+		cb.SetBuf(nil)
+		protoBufferPool.Put(cb)
+		return out, err
+	}
+
+ok，那么至此，grpc 的整个编解码的流程我们就已经剖析完了
