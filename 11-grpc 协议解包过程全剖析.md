@@ -20,7 +20,8 @@ All frames begin with a fixed 9-octet header followed by a variable-length paylo
 ```
 对于一个网络包而言，首先要知道这个包的格式，然后才能按照约定的格式解析出这个包。那么 grpc 的包是什么样的格式呢？ 看了源码后，先直接揭晓出来，它其实是这样的
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20191010171412460.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RpdWJyb3RoZXI=,size_16,color_FFFFFF,t_70)
+![](https://images.xiaozhuanlan.com/photo/2019/ad81643a987d5ae267f3ea2dc4cd3434.png)
+
 http 帧格式为：length (3 byte) + type(1 byte) + flag (1 byte)  + R (1 bit) + stream identifier  (31 bit) + paypoad，payload 是消息具体内容
 
 前 9 个字节是 http 包头，length 表示消息长度，type 表示 http 帧的类型，http 一共规定了 10 种帧类型：
@@ -241,7 +242,7 @@ func (p *parser) recvMsg(maxReceiveMessageSize int) (pf payloadFormat, msg []byt
 ```
 
 继续回到这个图，前面说到了 grpc 协议头是 5个字节。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20191010211219183.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2RpdWJyb3RoZXI=,size_16,color_FFFFFF,t_70)
+![](https://images.xiaozhuanlan.com/photo/2019/ad81643a987d5ae267f3ea2dc4cd3434.png)
 compressed-flag 表示是否压缩，值为 1 是压缩消息体数据，0 不压缩。
 length 表示消息体数据长度。现在终于知道了这个数据结构的由来！
 
