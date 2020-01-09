@@ -7,7 +7,7 @@
 
 前面我们已经说到了，grpc 是基于 http2 协议的，我们来看看 grpc 协议里面的一些关键信息：
 
-![](https://images.xiaozhuanlan.com/photo/2020/211eb35fa812fda032a342bc60611cb9.png)
+![grpc 协议](https://images.xiaozhuanlan.com/photo/2020/211eb35fa812fda032a342bc60611cb9.png)
 
 可以看到，一次请求需要携带这么多信息，server 会根据 client 携带的这些信息来进行相应的处理。那么这些协议里面定义的内容要如何被传递下去呢？
 
