@@ -40,7 +40,7 @@ grpc-go 官方 doc 说了这里关于 auth 的部分有 demo 放在 examples 目
 
 使用私钥生成证书
 
-	openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
+	openssl req -new -x509 -sha256 -key server.key -out server.pem -days 3650
 
 填写信息（注意 Common Name 要填写服务名）
 
