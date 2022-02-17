@@ -60,7 +60,7 @@ grpc 的协议支持流量控制，这里也是采用了 http2 的 flow control 
 
 5. 服务器推送
 
-	如果一个 client 请求资源 A，而 server 知道 client 可能也会需要资源 B， 所以在 client 发起请求前，server 提前将 B 推送给 A 缓存起来，从而可以缩短资源 A 这个请求的响应时间。
+	如果一个 client 请求页面其中有 html 资源 A，而 server 知道 client 可能也会需要 css 资源 B， 所以在 client 发起请求前，server 提前将 css 资源 B 推送给 client 缓存起来，从而可以缩短这个页面请求的响应时间。
 
 6. flow control
 	
