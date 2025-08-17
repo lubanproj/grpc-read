@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-concepts-http2/
+> 最新版本请访问原文链接
+
 ### 写在前面
 
 #### grpc 介绍

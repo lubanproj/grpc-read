@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-service-discovery/
+> 最新版本请访问原文链接
+
 ### 服务发现
 在了解 grpc 服务发现之前，我们先来了解一下服务发现的路由方式。一般来说，我们有客户端路由和代理层路由两种方式。
 

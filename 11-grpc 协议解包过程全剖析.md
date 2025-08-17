@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-protocol-unpacking-analysis/
+> 最新版本请访问原文链接
+
 ###  http2 协议帧格式
 
 我们知道网络传输都是以二进制的形式，所以所有的协议底层的传输也是二进制。那么问题来了，client 往 server 发一个数据包，server 如何知道数据包是完成还是还在发送呢？又或者，假如一个数据包过大，client 需要拆成几个包发送，或者数据包过小，client 需要合成一个包发送，server 如何识别呢？为了解决这些问题，client 和 server 都会约定好一些双方都能理解的“规则“，这就是协议。

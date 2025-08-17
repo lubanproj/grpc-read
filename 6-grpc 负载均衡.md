@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-load-balancing/
+> 最新版本请访问原文链接
+
 ### grpc负载均衡
 #### 负载均衡流程
 grpc 官方的 doc 中介绍了，grpc 的负载均衡是基于一次请求而不是一次连接的。也就是说，假如所有的请求都来自同一个客户端的连接，这些请求还是会被均衡到所有服务器。

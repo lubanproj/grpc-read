@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-data-flow/
+> 最新版本请访问原文链接
+
 #  grpc 数据流转
 
 阅读本文的前提是你对 grpc 协议的编解码和 协议打解包过程都比较清楚了，假如不是很了解可以先去阅读 [《10 - grpc 协议编解码器》](https://github.com/lubanproj/grpc_read/blob/master/10-grpc%20%E5%8D%8F%E8%AE%AE%E7%BC%96%E8%A7%A3%E7%A0%81%E5%99%A8.md) 和 [《11 - grpc 协议解包过程全剖析》](https://github.com/lubanproj/grpc_read/blob/master/11-grpc%20%E5%8D%8F%E8%AE%AE%E8%A7%A3%E5%8C%85%E8%BF%87%E7%A8%8B%E5%85%A8%E5%89%96%E6%9E%90.md)

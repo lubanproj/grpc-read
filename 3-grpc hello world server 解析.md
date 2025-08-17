@@ -1,3 +1,5 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-hello-world-server-analysis/
+> 最新版本请访问原文链接
 
 ### grpc hello world server 解析
 

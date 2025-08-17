@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-auth-oauth2/
+> 最新版本请访问原文链接
+
 ## grpc 认证鉴权 —— oauth2
 
 前面我们说了 tls 认证，tls 保证了 client 和 server 通信的安全性，但是无法做到接口级别的权限控制。例如有 A、B、C、D 四个系统，存在下面两个场景：

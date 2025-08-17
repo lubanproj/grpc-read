@@ -1,3 +1,6 @@
+> 本文原发表于：https://diu.life/lessons/grpc-read/grpc-interceptor-implementation/
+> 最新版本请访问原文链接
+
 ## grpc 源码解读 —— 从 0 到 1 实现拦截器
 
 拦截器，通俗点说，就是在执行一段代码之前或者之后，去执行另外一段代码。
